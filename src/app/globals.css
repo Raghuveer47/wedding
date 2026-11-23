@@ -1,0 +1,178 @@
+@import "@fontsource/cormorant-garamond/400.css";
+@import "@fontsource/cormorant-garamond/500.css";
+@import "@fontsource/cormorant-garamond/600.css";
+@import "@fontsource/cormorant-garamond/400-italic.css";
+@import "@fontsource/cinzel/500.css";
+@import "@fontsource/cinzel/600.css";
+@import "@fontsource/pinyon-script/400.css";
+@import "@fontsource/noto-serif-telugu/400.css";
+@import "@fontsource/noto-serif-telugu/600.css";
+@import "@fontsource/jost/400.css";
+@import "@fontsource/jost/500.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --maroon: #6e1423;
+  --gold: #b8893b;
+  --gold-light: #d9b56c;
+  --ivory: #fbf6ec;
+  --cream: #f3e7d0;
+  --green: #1f4a37;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  background: var(--ivory);
+  color: #3a1a1f;
+  overflow-x: hidden;
+  font-family: "Jost", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+body.gate-locked {
+  overflow: hidden;
+  height: 100svh;
+}
+::selection {
+  background: rgba(217, 181, 108, 0.45);
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@layer components {
+  /* gold foil text */
+  .text-foil {
+    background: linear-gradient(100deg, #8a6424 0%, #d9b56c 22%, #f6e7b8 38%, #c79a48 55%, #8a6424 78%, #d9b56c 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: foil 9s ease-in-out infinite;
+  }
+  /* brighter foil for dark backgrounds */
+  .text-foil-light {
+    background: linear-gradient(100deg, #c99a4a 0%, #f6e7b8 25%, #fff6dc 40%, #e3c27c 60%, #c99a4a 80%, #f6e7b8 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: foil 9s ease-in-out infinite;
+  }
+  /* parchment texture: layered gradients, no image request */
+  .bg-parchment {
+    background-color: #fbf6ec;
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(217, 181, 108, 0.14), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(110, 20, 35, 0.06), transparent 45%),
+      repeating-radial-gradient(circle at 50% 50%, rgba(184, 137, 59, 0.035) 0 2px, transparent 2px 9px);
+  }
+  .bg-velvet {
+    background-color: #4a0b16;
+    background-image:
+      radial-gradient(ellipse at 50% 30%, rgba(140, 42, 56, 0.55), transparent 65%),
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.08) 0 1px, transparent 1px 5px);
+  }
+  .bg-temple {
+    background-color: #12301f;
+    background-image:
+      radial-gradient(ellipse at 50% 0%, rgba(46, 97, 73, 0.75), transparent 60%),
+      radial-gradient(ellipse at 50% 120%, rgba(184, 137, 59, 0.18), transparent 55%);
+  }
+  .gold-frame {
+    position: relative;
+    border: 1px solid rgba(184, 137, 59, 0.75);
+    box-shadow: inset 0 0 0 5px rgba(251, 246, 236, 1), inset 0 0 0 6px rgba(184, 137, 59, 0.5);
+  }
+  .film-grain::after {
+    content: "";
+    position: absolute;
+    inset: -50%;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>");
+    opacity: 0.08;
+    animation: grain 1.2s steps(6) infinite;
+  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+}
+
+/* petals */
+.petal {
+  position: absolute;
+  top: -8%;
+  border-radius: 80% 0 80% 0;
+  opacity: 0.8;
+  animation-name: petal-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  box-shadow: inset -2px -2px 3px rgba(0, 0, 0, 0.12);
+}
+@keyframes petal-fall {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+  8% { opacity: 0.85; }
+  100% { transform: translate3d(var(--drift), 112vh, 0) rotate(540deg); opacity: 0.2; }
+}
+
+/* golden particles */
+.dust {
+  position: absolute;
+  border-radius: 9999px;
+  background: #f4dda0;
+  box-shadow: 0 0 6px 1px rgba(244, 221, 160, 0.8);
+  opacity: 0.5;
+}
+.dust-anim { animation: twinkle ease-in-out infinite; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; transform: translateY(0) scale(0.7); }
+  50% { opacity: 0.95; transform: translateY(-10px) scale(1.15); }
+}
+
+/* lamp flame flicker */
+.diya-flame { animation: flicker 2.4s ease-in-out infinite; }
+@keyframes flicker {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.06, 0.95) rotate(-2deg); }
+  50% { transform: scale(0.96, 1.05) rotate(1.5deg); }
+  75% { transform: scale(1.03, 0.98) rotate(-1deg); }
+}
+
+@keyframes foil {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-5%, 3%); }
+  40% { transform: translate(4%, -4%); }
+  60% { transform: translate(-3%, 5%); }
+  80% { transform: translate(5%, -2%); }
+  100% { transform: translate(0, 0); }
+}
+@keyframes slow-spin { to { transform: rotate(360deg); } }
+.slow-spin { animation: slow-spin 90s linear infinite; }
+
+/* string lights for reception */
+.bulb {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: #ffe2a0;
+  box-shadow: 0 0 10px 3px rgba(255, 200, 110, 0.75), 0 0 28px 8px rgba(255, 170, 70, 0.25);
+  animation: bulb 3.2s ease-in-out infinite;
+}
+@keyframes bulb {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
